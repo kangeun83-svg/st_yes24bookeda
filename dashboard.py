@@ -6,6 +6,20 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import re
 import os
+import koreanize_matplotlib
+
+# --- Font Installation for Streamlit Cloud (WordCloud) ---
+def get_font_path():
+    font_path = "NanumGothic.ttf"
+    if not os.path.exists(font_path):
+        import requests
+        url = "https://github.com/google/fonts/raw/main/ofl/nanumgothic/NanumGothic-Regular.ttf"
+        response = requests.get(url)
+        with open(font_path, "wb") as f:
+            f.write(response.content)
+    return font_path
+
+font_path = get_font_path()
 
 # --- Configuration & Setup ---
 st.set_page_config(
@@ -278,7 +292,7 @@ elif "키워드" in menu:
             words = [w for w in words if w not in stopwords and len(w) > 1]
             
             if words:
-                wc = WordCloud(font_path='C:/Windows/Fonts/malgun.ttf', width=800, height=400, background_color='white').generate(' '.join(words))
+                wc = WordCloud(font_path=font_path, width=800, height=400, background_color='white').generate(' '.join(words))
                 
                 fig, ax = plt.subplots(figsize=(10, 5))
                 ax.imshow(wc, interpolation='bilinear')
