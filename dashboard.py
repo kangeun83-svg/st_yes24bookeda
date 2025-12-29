@@ -6,9 +6,9 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import re
 import os
-import koreanize_matplotlib
+import matplotlib.font_manager as fm
 
-# --- Font Installation for Streamlit Cloud (WordCloud) ---
+# --- Font Installation for Streamlit Cloud (WordCloud & Matplotlib) ---
 def get_font_path():
     font_path = "NanumGothic.ttf"
     if not os.path.exists(font_path):
@@ -20,6 +20,12 @@ def get_font_path():
     return font_path
 
 font_path = get_font_path()
+
+# Register font for Matplotlib
+fm.fontManager.addfont(font_path)
+font_name = fm.FontProperties(fname=font_path).get_name()
+plt.rc('font', family=font_name)
+plt.rc('axes', unicode_minus=False)  # Fix minus sign issue
 
 # --- Configuration & Setup ---
 st.set_page_config(
